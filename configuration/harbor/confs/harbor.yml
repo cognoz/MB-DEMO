@@ -1,0 +1,40 @@
+# Configuration file of Harbor
+
+# The IP address or hostname to access admin UI and registry service.
+# DO NOT use localhost or 127.0.0.1, because Harbor needs to be accessed by external clients.
+hostname: 10.0.1.95
+http:
+  port: 80
+https:
+  port: 443
+  certificate: /etc/harbor/certs/harbor.mb.com.crt
+  private_key: /etc/harbor/certs/harbor.mb.com.key
+harbor_admin_password: HarborMB1qaz
+database:
+  password: root123
+  max_idle_conns: 50
+  max_open_conns: 100
+data_volume: /data
+clair:
+  updaters_interval: 12
+jobservice:
+  max_job_workers: 10
+notification:
+  webhook_job_max_retry: 10
+chart:
+  absolute_url: disabled
+log:
+  level: info
+  local:
+    rotate_count: 50
+    rotate_size: 200M
+    location: /var/log/harbor
+_version: 1.9.0
+proxy:
+  http_proxy:
+  https_proxy:
+  no_proxy: 127.0.0.1,localhost,.local,.internal,log,db,redis,nginx,core,portal,postgresql,jobservice,registry,registryctl,clair
+  components:
+    - core
+    - jobservice
+    - clair

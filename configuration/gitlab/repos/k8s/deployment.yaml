@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mb-sdk
+  labels:
+    app: mb-sdk
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mb-sdk
+  template:
+    metadata:
+      labels:
+        app: mb-sdk
+    spec:
+      containers:
+      - name: mb-sdk
+        image: harbor.mb.com/mb-demo/sdk-api:APP_VERSION
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "250m"
+          requests:
+            memory: "256Mi"
+            cpu: "150m"
+      imagePullSecrets:
+      - name: harbor.mb.com
+

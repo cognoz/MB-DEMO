@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Vehicles</title>
+</head>
+<body>
+    <div style="display: flex; justify-content: center;">
+      <div style="display: flex; justify-content: center; flex-direction: column; width: 800px;">
+      <div class="form-group">
+          <label>API endpoint</label>
+          <input type="text" class="form-control form-control-sm" id="endpoint" placeholder="Enter API endpoint">
+      </div>
+      <div style="display: flex; justify-content: center; flex-direction: row;">
+          <div class="form-group">
+            <label>Trip data</label>
+            <textarea id="request_json" rows="10" cols="40">
+            </textarea>
+          </div>
+          <div class="form-group">
+            <label>Analyzed data</label>
+            <textarea id="response_json" rows="10" cols="40">
+            </textarea>
+          </div>
+      </div>
+      <button id="btn_send_data" class="btn btn-primary">Send data</button>
+
+    </div>
+
+
+
+    <script>
+
+            var endpoint = document.getElementById('endpoint');
+            var btn_send_data = document.getElementById('btn_send_data');
+            var request_json = document.getElementById('request_json');
+            var response_json = document.getElementById('response_json');
+
+
+
+            endpoint.value = "http://localhost:5000/v1/trip"
+            var data = {
+                        "vin" : "WDD1671591Z000999",
+                        "breakThreshold" : 1800,
+                        "gasTankSize" : 100,
+                        "data" :[
+                                    {
+                                        "timestamp" : 1589728287,
+                                        "odometer" : 548,
+                                        "fuelLevel" : 80,
+                                        "positionLat" : 55.797226,
+                                        "positionLong" : 37.538148
+                                    },
+                                    {
+                                        "timestamp" : 1589738288,
+                                        "odometer" : 611,
+                                        "fuelLevel" : 20,
+                                        "positionLat" : 56.867187,
+                                        "positionLong" : 35.908777
+                                    },
+                                    {
+                                        "timestamp" : 1589748289,
+                                        "odometer" : 698,
+                                        "fuelLevel" : 100,
+                                        "positionLat" : 57.580585,
+                                        "positionLong" : 34.574110
+                                    },
+                                    {
+                                        "timestamp" : 1589758299,
+                                        "odometer" : 698,
+                                        "fuelLevel" : 60,
+                                        "positionLat" : 58.524382,
+                                        "positionLong" : 31.286626
+                                    },
+                                    {
+                                        "timestamp" : 1589798310,
+                                        "odometer" : 611,
+                                        "fuelLevel" : 90,
+                                        "positionLat" : 59.877219,
+                                        "positionLong" : 30.373989
+                                    }
+                                ]};
+            var json = JSON.stringify(data, undefined, 4);
+            request_json.value = json;
+
+            btn_send_data.addEventListener("click", function() {
+
+                json = request_json.value;
+                console.log(json);
+
+                let promise = fetch(endpoint.value, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': 'Basic NBXbG5ixoMM22xrMHCzwZs2fJxBKlUgE2mlwfyy4iDXhczKyP6qtgvnfE1UTS2UqkX3gt5DxoCT3KushjJx3wg=='
+                                },
+<!--                                body: JSON.stringify(data)-->
+                                body: json
+
+                                });
+                promise.then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        response_json.value = JSON.stringify(data, undefined, 4);
+                    });
+            });
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

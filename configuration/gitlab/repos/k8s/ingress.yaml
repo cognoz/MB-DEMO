@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  generation: 1
+  name: mb-sdk-ingress
+spec:
+  rules:
+  - host: sdk.mb.com
+    http:
+      paths:
+      - backend:
+          serviceName: mb-sdk-svc
+          servicePort: 8080
+  tls:
+  - hosts:
+    - sdk.mb.com
+    secretName: sdk.mb.com
